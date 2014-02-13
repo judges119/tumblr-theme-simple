@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{Title}{block:PostSummary} - {PostSummary}{/block:PostSummary}</title>
+        
+        <link rel="shortcut icon" href="{Favicon}">
+        <link rel="alternate" type="application/rss+xml" href="{RSS}">
+        {block:Description}
+            <meta name="description" content="{MetaDescription}" />
+        {/block:Description}
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
+        
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://code.jquery.com/jquery.js"></script>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+        
+        <style>
+            blockquote {
+                border-left: 3px solid #4C4C4C;   
+            }
+        </style>
+    </head>
+    <body style="background-color:#4C4C4C;">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container-fluid" style="background-color:#F5F5F5;">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{BlogURL}">{Title}</a>
+                </div>
+    
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/tagged/me">GPOY</a></li>
+                        {block:AskEnabled}
+                            <li><a href="/ask">{AskLabel}</a></li>
+                        {/block:AskEnabled}
+                        {block:SubmissionsEnabled}
+                            <li><a href="/submit">{SubmitLabel}</a></li>
+                        {/block:SubmissionsEnabled}
+                        {block:HasPages}
+                            {block:Pages}
+                                <li><a href="{URL}">{Label}</a></li>
+                            {/block:Pages}
+                        {/block:HasPages}
+                        <li><a href="/archive">Archive</a></li>
+                    </ul>
+                    
+                    <form class="navbar-form navbar-left" action="/search" method="get">
+                    
+                        <input type="text" class="form-control" name="q" value="{SearchQuery}"/>
+                        <button type="submit" class="btn btn-default" value="Search">Search</button>
+                    </form>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+        
+        <div class="container">
+            <div class="jumbotron" style="margin-top:75px;">
+                <h1 style="text-align:right;">{Title}</h1>
+                {block:Description}
+                    <h4 style="text-align:right;"><small>{Description}</small></h4>
+                {/block:Description}
+                <div style="text-align:right;">
+                    <a><span class="glyphicon glyphicon-info-sign" data-container="body" data-toggle="popover" data-placement="left" data-content="Click an info logo for post details."></span></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Pages -->
+        {block:SearchPage}
+            <div class="row">
+                <div class="well col-xs-4 col-xs-offset-4" style="text-align:center">
+                    Query: "{SearchQuery}"<br />
+                    Results: {SearchResultCount}
+                </div>
+            </div>
+        {/block:SearchPage}
+        <!-- Search Pages -->
+        
+        <!-- Tag Pages -->
+        {block:TagPage}
+            <div class="row">
+                <div class="well col-xs-4 col-xs-offset-4" style="text-align:center">
+                    Tag: "{Tag}"
+                </div>
+            </div>
+        {/block:TagPage}
+        <!-- Tag Pages -->
+        
+        <div id="posts" class="row container-fluid">
+            {block:Posts}
+                {block:Text}
+                <div class="container">
+                    <div class="jumbotron" style="margin-left:50px;margin-right:50px;">
+                        <div class="post text">
+                            {block:Title}
+                                <h2><a href="{Permalink}">{Title}</a></h2>
+                            {/block:Title}
+                            {Body}
+                        </div>
+                        <div style="text-align:center;">
+                            <a onclick="$('.extra{PostID}').toggle(400)"><span class="glyphicon glyphicon-info-sign"></span></a>
+                        </div>
+                        <div class="extra{PostID}" style="display:none;">
+                            <strong>Metadata</strong><br />
+                            Post ID: {PostID}<br />
+                            Permalink: <a href="{Permalink}">{ShortURL}</a><br />
+                            <a onclick="$('.time-display').toggle()">Date/Time</a> <span class="time-display" style="display:none">[Machine] : {Timestamp}</span><span class="time-display" style="display:initial">[Human] : {Year}-{MonthNumberWithZero}-{DayOfMonthWithZero} {24HourWithZero}:{Minutes}:{Seconds}:{Beats}</span><br />
+                            {block:RebloggedFrom}
+                                Reblogged From: <a href="{ReblogParentURL}">{ReblogParentName}</a><br />
+                                Post Creator: <a href="{ReblogRootURL}">{ReblogRootName}</a><br />
+                            {/block:RebloggedFrom}
+                            {block:NotReblog}
+                                Original Content<br />
+                            {/block:NotReblog}
+                            {block:HasTags}
+                                Tags:<br />
+                                {block:Tags}
+                                    - <a href="{TagURL}">{Tag}</a><br />
+                                {/block:Tags}
+                            {/block:HasTags}
+                            {block:ContentSource}
+                                Source: <a href="{SourceURL}">{SourceTitle}</a><br />
+                            {/block:ContentSource}
+                            Notes: {NoteCount}
+                            {block:PostNotes}
+                                {PostNotes}
+                            {/block:PostNotes}
+                        </div>
+                    </div>
+                </div>
+                {/block:Text}
+                {block:Photo}
+                <div class="container">
+                    <div class="jumbotron" style="margin-left:50px;margin-right:50px;">
+                        <div class="post photo">
+                            <div style="margin-left:auto;margin-right:auto;width:{PhotoWidth-500}px;text-align:center;">
+                                {LinkOpenTag}<img src="{PhotoURL-500}" alt="{PhotoAlt}" style="border-radius:5px;"/>{LinkCloseTag}<br />
+                            </div>
+                            {block:Caption}
+                                <div class="caption" style="margin-top:25px;">{Caption}</div>
+                            {/block:Caption}
+                        </div>
+                        <div style="text-align:center;">
+                            <a onclick="$('.extra{PostID}').toggle(400)"><span class="glyphicon glyphicon-info-sign"></span></a>
+                        </div>
+                        <div class="extra{PostID}" style="display:none;">
+                            <strong>Photo</strong><br />
+                            {block:HighRes}
+                                Hi-Res: <a href="{PhotoURL-HighRes}">{PhotoWidth-HighRes} x {PhotoHeight-HighRes}</a><br />
+                            {/block:HighRes}
+                            {block:Exif}
+                                {block:Camera}
+                                    Camera: {Camera}<br />
+                                {/block:Camera}
+                                {block:Aperture}
+                                    Aperture: {Aperture}<br />
+                                {/block:Aperture}
+                                {block:Exposure}
+                                    Exposure: {Exposure}<br />
+                                {/block:Exposure}
+                                {block:FocalLength}
+                                    Focal Length: {FocalLength}<br />
+                                {/block:FocalLength}
+                            {/block:Exif}
+                            
+                            <strong>Metadata</strong><br />
+                            Post ID: {PostID}<br />
+                            Permalink: <a href="{Permalink}">{ShortURL}</a><br />
+                            <a onclick="$('.time-display').toggle()">Date/Time</a> <span class="time-display" style="display:none">[Machine] : {Timestamp}</span><span class="time-display" style="display:initial">[Human] : {Year}-{MonthNumberWithZero}-{DayOfMonthWithZero} {24HourWithZero}:{Minutes}:{Seconds}:{Beats}</span><br />
+                            {block:RebloggedFrom}
+                                Reblogged From: <a href="{ReblogParentURL}">{ReblogParentName}</a><br />
+                                Post Creator: <a href="{ReblogRootURL}">{ReblogRootName}</a><br />
+                            {/block:RebloggedFrom}
+                            {block:NotReblog}
+                                Original Content<br />
+                            {/block:NotReblog}
+                            {block:HasTags}
+                                Tags:<br />
+                                {block:Tags}
+                                    - <a href="{TagURL}">{Tag}</a><br />
+                                {/block:Tags}
+                            {/block:HasTags}
+                            {block:ContentSource}
+                                Source: <a href="{SourceURL}">{SourceTitle}</a><br />
+                            {/block:ContentSource}
+                            Notes: {NoteCount}
+                            {block:PostNotes}
+                                {PostNotes}
+                            {/block:PostNotes}
+                        </div>
+                    </div>
+                </div>
+                {/block:Photo}
+                {block:Panorama}
+                <div class="container">
+                    <div class="jumbotron" style="margin-left:50px;margin-right:50px;">
+                        <div class="post panorama">
+                            <div style="margin-left:auto;margin-right:auto;width:500px;">
+                            {LinkOpenTag}
+                                <img src="{PhotoURL-Panorama}" alt="{PhotoAlt}" width="700" style="border-radius:5px;"/>
+                            {LinkCloseTag}
+                            {block:Caption}
+                                <div class="caption" style="margin-top:25px;">{Caption}</div>
+                            {/block:Caption}
+                        </div>
+                        <div style="text-align:center;">
+                            <a onclick="$('.extra{PostID}').toggle(400)"><span class="glyphicon glyphicon-info-sign"></span></a>
+                        </div>
+                        <div class="extra{PostID}" style="display:none;">
+                            <strong>Panorama</strong><br />
+                            Hi-Res: <a href="{PhotoURL-Panorama}">{PhotoWidth-Panorama} x {PhotoHeight-Panorama}</a><br />
+                            
+                            <strong>Metadata</strong><br />
+                            Post ID: {PostID}<br />
+                            Permalink: <a href="{Permalink}">{ShortURL}</a><br />
+                            <a onclick="$('.time-display').toggle()">Date/Time</a> <span class="time-display" style="display:none">[Machine] : {Timestamp}</span><span class="time-display" style="display:initial">[Human] : {Year}-{MonthNumberWithZero}-{DayOfMonthWithZero} {24HourWithZero}:{Minutes}:{Seconds}:{Beats}</span><br />
+                            {block:RebloggedFrom}
+                                Reblogged From: <a href="{ReblogParentURL}">{ReblogParentName}</a><br />
+                                Post Creator: <a href="{ReblogRootURL}">{ReblogRootName}</a><br />
+                            {/block:RebloggedFrom}
+                            {block:NotReblog}
+                                Original Content<br />
+                            {/block:NotReblog}
+                            {block:HasTags}
+                                Tags:<br />
+                                {block:Tags}
+                                    - <a href="{TagURL}">{Tag}</a><br />
+                                {/block:Tags}
+                            {/block:HasTags}
+                            {block:ContentSource}
+                                Source: <a href="{SourceURL}">{SourceTitle}</a><br />
+                            {/block:ContentSource}
+                            Notes: {NoteCount}
+                            {block:PostNotes}
+                                {PostNotes}
+                            {/block:PostNotes}
+                        </div>
+                    </div>
+                </div>
+                {/block:Panorama}
+                {block:Photoset}
+                <div class="container">
+                    <div class="jumbotron" style="margin-left:50px;margin-right:50px;">
+                        <div class="post photoset">
+                            <div style="margin-left:auto;margin-right:auto;width:700px;">
+                                {Photoset-700}
+                            </div>
+                            {block:Caption}
+                                <div class="caption" style="margin-top:25px;">{Caption}</div>
+                            {/block:Caption}
+                        </div>
+                        <div style="text-align:center;">
+                            <a onclick="$('.extra{PostID}').toggle(400)"><span class="glyphicon glyphicon-info-sign"></span></a>
+                        </div>
+                        <div class="extra{PostID}" style="display:none;">
+                            <strong>Photoset</strong><br />
+                            Count: {PhotoCount}<br />
+                            {block:Photos}
+                                {block:HighRes}
+                                    Hi-Res: <a href="{PhotoURL-HighRes}">{PhotoWidth-HighRes} x {PhotoHeight-HighRes}</a><br />
+                                {/block:HighRes}
+                                {block:Exif}
+                                    {block:Camera}
+                                        Camera: {Camera}<br />
+                                    {/block:Camera}
+                                    {block:Aperture}
+                                        Aperture: {Aperture}<br />
+                                    {/block:Aperture}
+                                    {block:Exposure}
+                                        Exposure: {Exposure}<br />
+                                    {/block:Exposure}
+                                    {block:FocalLength}
+                                        Focal Length: {FocalLength}<br />
+                                    {/block:FocalLength}
+                                {/block:Exif}
+                            {/block:Photos}
+                            
+                            <strong>Metadata</strong><br />
+                            Post ID: {PostID}<br />
+                            Permalink: <a href="{Permalink}">{ShortURL}</a><br />
+                            <a onclick="$('.time-display').toggle()">Date/Time</a> <span class="time-display" style="display:none">[Machine] : {Timestamp}</span><span class="time-display" style="display:initial">[Human] : {Year}-{MonthNumberWithZero}-{DayOfMonthWithZero} {24HourWithZero}:{Minutes}:{Seconds}:{Beats}</span><br />
+                            {block:RebloggedFrom}
+                                Reblogged From: <a href="{ReblogParentURL}">{ReblogParentName}</a><br />
+                                Post Creator: <a href="{ReblogRootURL}">{ReblogRootName}</a><br />
+                            {/block:RebloggedFrom}
+                            {block:NotReblog}
+                                Original Content<br />
+                            {/block:NotReblog}
+                            {block:HasTags}
+                                Tags:<br />
+                                {block:Tags}
+                                    - <a href="{TagURL}">{Tag}</a><br />
+                                {/block:Tags}
+                            {/block:HasTags}
+                            {block:ContentSource}
+                                Source: <a href="{SourceURL}">{SourceTitle}</a><br />
+                            {/block:ContentSource}
+                            Notes: {NoteCount}
+                            {block:PostNotes}
+                                {PostNotes}
+                            {/block:PostNotes}
+                        </div>
+                    </div>
+                </div>
+                {/block:Photoset}
+                {block:Quote}
+                <div class="container">
+                    <div class="jumbotron" style="margin-left:50px;margin-right:50px;">
+                        <div class="post quote">
+                            <h4>"{Quote}"</h4>
+                            {block:Source}
+                                <div class="source">- {Source}</div>
+                            {/block:Source}
+                        </div>
+                        <div style="text-align:center;">
+                            <a onclick="$('.extra{PostID}').toggle(400)"><span class="glyphicon glyphicon-info-sign"></span></a>
+                        </div>
+                        <div class="extra{PostID}" style="display:none;">
+                            <strong>Metadata</strong><br />
+                            Post ID: {PostID}<br />
+                            Permalink: <a href="{Permalink}">{ShortURL}</a><br />
+                            <a onclick="$('.time-display').toggle()">Date/Time</a> <span class="time-display" style="display:none">[Machine] : {Timestamp}</span><span class="time-display" style="display:initial">[Human] : {Year}-{MonthNumberWithZero}-{DayOfMonthWithZero} {24HourWithZero}:{Minutes}:{Seconds}:{Beats}</span><br />
+                            {block:RebloggedFrom}
+                                Reblogged From: <a href="{ReblogParentURL}">{ReblogParentName}</a><br />
+                                Post Creator: <a href="{ReblogRootURL}">{ReblogRootName}</a><br />
+                            {/block:RebloggedFrom}
+                            {block:NotReblog}
+                                Original Content<br />
+                            {/block:NotReblog}
+                            {block:HasTags}
+                                Tags:<br />
+                                {block:Tags}
+                                    - <a href="{TagURL}">{Tag}</a><br />
+                                {/block:Tags}
+                            {/block:HasTags}
+                            {block:ContentSource}
+                                Source: <a href="{SourceURL}">{SourceTitle}</a><br />
+                            {/block:ContentSource}
+                            Notes: {NoteCount}
+                            {block:PostNotes}
+                                {PostNotes}
+                            {/block:PostNotes}
+                        </div>
+                    </div>
+                </div>
+                {/block:Quote}
+                {block:Link}
+                <div class="container">
+                    <div class="jumbotron" style="margin-left:50px;margin-right:50px;">
+                        <div class="post link">
+                            {block:Thumbnail}
+                                <div style="margin-left:auto;margin-right:auto;width:150px;">
+                                    <img src="{Thumbnail}" width="150" style="border-radius:5px;"/>
+                                </div>
+                            {/block:Thumbnail}
+                            <h2><a href="{URL}" class="link" {Target}>{Name}</a></h2>
+                            {block:Description}
+                                <div class="description">{Description}</div>
+                            {/block:Description}
+                        </div>
+                        <div style="text-align:center;">
+                            <a onclick="$('.extra{PostID}').toggle(400)"><span class="glyphicon glyphicon-info-sign"></span></a>
+                        </div>
+                        <div class="extra{PostID}" style="display:none;">
+                            <strong>Metadata</strong><br />
+                            Post ID: {PostID}<br />
+                            Permalink: <a href="{Permalink}">{ShortURL}</a><br />
+                            <a onclick="$('.time-display').toggle()">Date/Time</a> <span class="time-display" style="display:none">[Machine] : {Timestamp}</span><span class="time-display" style="display:initial">[Human] : {Year}-{MonthNumberWithZero}-{DayOfMonthWithZero} {24HourWithZero}:{Minutes}:{Seconds}:{Beats}</span><br />
+                            {block:RebloggedFrom}
+                                Reblogged From: <a href="{ReblogParentURL}">{ReblogParentName}</a><br />
+                                Post Creator: <a href="{ReblogRootURL}">{ReblogRootName}</a><br />
+                            {/block:RebloggedFrom}
+                            {block:NotReblog}
+                                Original Content<br />
+                            {/block:NotReblog}
+                            {block:HasTags}
+                                Tags:<br />
+                                {block:Tags}
+                                    - <a href="{TagURL}">{Tag}</a><br />
+                                {/block:Tags}
+                            {/block:HasTags}
+                            {block:ContentSource}
+                                Source: <a href="{SourceURL}">{SourceTitle}</a><br />
+                            {/block:ContentSource}
+                            Notes: {NoteCount}
+                            {block:PostNotes}
+                                {PostNotes}
+                            {/block:PostNotes}
+                        </div>
+                    </div>
+                </div>
+                {/block:Link}
+                {block:Chat}
+                <div class="container">
+                    <div class="jumbotron" style="margin-left:50px;margin-right:50px;">
+                        <div class="post chat">
+                            {block:Title}
+                                <h2><a href="{Permalink}">{Title}</a></h2>
+                            {/block:Title}
+                            <ul class="chat">
+                                {block:Lines}
+                                    <li class="{Alt} user_{UserNumber}">
+                                        {block:Label}
+                                            <strong>{Label}</strong>
+                                        {/block:Label}
+                                        {Line}
+                                    </li>
+                                {/block:Lines}
+                            </ul>
+                        </div>
+                        <div style="text-align:center;">
+                            <a onclick="$('.extra{PostID}').toggle(400)"><span class="glyphicon glyphicon-info-sign"></span></a>
+                        </div>
+                        <div class="extra{PostID}" style="display:none;">
+                            <strong>Metadata</strong><br />
+                            Post ID: {PostID}<br />
+                            Permalink: <a href="{Permalink}">{ShortURL}</a><br />
+                            <a onclick="$('.time-display').toggle()">Date/Time</a> <span class="time-display" style="display:none">[Machine] : {Timestamp}</span><span class="time-display" style="display:initial">[Human] : {Year}-{MonthNumberWithZero}-{DayOfMonthWithZero} {24HourWithZero}:{Minutes}:{Seconds}:{Beats}</span><br />
+                            {block:RebloggedFrom}
+                                Reblogged From: <a href="{ReblogParentURL}">{ReblogParentName}</a><br />
+                                Post Creator: <a href="{ReblogRootURL}">{ReblogRootName}</a><br />
+                            {/block:RebloggedFrom}
+                            {block:NotReblog}
+                                Original Content<br />
+                            {/block:NotReblog}
+                            {block:HasTags}
+                                Tags:<br />
+                                {block:Tags}
+                                    - <a href="{TagURL}">{Tag}</a><br />
+                                {/block:Tags}
+                            {/block:HasTags}
+                            {block:ContentSource}
+                                Source: <a href="{SourceURL}">{SourceTitle}</a><br />
+                            {/block:ContentSource}
+                            Notes: {NoteCount}
+                            {block:PostNotes}
+                                {PostNotes}
+                            {/block:PostNotes}
+                        </div>
+                    </div>
+                </div>
+                {/block:Chat}
+                {block:Video}
+                <div class="container">
+                    <div class="jumbotron" style="margin-left:50px;margin-right:50px;">
+                        <div class="post video">
+                            <div style="margin-left:auto;margin-right:auto;width:700px;">
+                                {VideoEmbed-700}
+                            </div>
+                            {block:Caption}
+                                <div class="caption" style="margin-top:25px;">{Caption}</div>
+                            {/block:Caption}
+                        </div>
+                        <div style="text-align:center;">
+                            <a onclick="$('.extra{PostID}').toggle(400)"><span class="glyphicon glyphicon-info-sign"></span></a>
+                        </div>
+                        <div class="extra{PostID}" style="display:none;">
+                            <strong>Video</strong><br />
+                            Play Count: {PlayCount}<br />
+                            Thumbnails:<br />
+                            {block:VideoThumbnails}
+                                - <a href="{VideoThumbnailURL}">{VideoThumbnailURL}</a><br />
+                            {/block:VideoThumbnails}
+                            
+                            <strong>Metadata</strong><br />
+                            Post ID: {PostID}<br />
+                            Permalink: <a href="{Permalink}">{ShortURL}</a><br />
+                            <a onclick="$('.time-display').toggle()">Date/Time</a> <span class="time-display" style="display:none">[Machine] : {Timestamp}</span><span class="time-display" style="display:initial">[Human] : {Year}-{MonthNumberWithZero}-{DayOfMonthWithZero} {24HourWithZero}:{Minutes}:{Seconds}:{Beats}</span><br />
+                            {block:RebloggedFrom}
+                                Reblogged From: <a href="{ReblogParentURL}">{ReblogParentName}</a><br />
+                                Post Creator: <a href="{ReblogRootURL}">{ReblogRootName}</a><br />
+                            {/block:RebloggedFrom}
+                            {block:NotReblog}
+                                Original Content<br />
+                            {/block:NotReblog}
+                            {block:HasTags}
+                                Tags:<br />
+                                {block:Tags}
+                                    - <a href="{TagURL}">{Tag}</a><br />
+                                {/block:Tags}
+                            {/block:HasTags}
+                            {block:ContentSource}
+                                Source: <a href="{SourceURL}">{SourceTitle}</a><br />
+                            {/block:ContentSource}
+                            Notes: {NoteCount}
+                            {block:PostNotes}
+                                {PostNotes}
+                            {/block:PostNotes}
+                        </div>
+                    </div>
+                </div>
+                {/block:Video}
+                {block:Audio}
+                <div class="container">
+                    <div class="jumbotron" style="margin-left:50px;margin-right:50px;">
+                        <div class="post audio">
+                            {block:AudioEmbed}
+                                <div style="margin-left:auto;margin-right:auto;width:640px;">
+                                    {AudioEmbed-640}
+                                </div>
+                            {/block:AudioEmbed}
+                            {block:AudioPlayer}
+                                {AudioPlayerGrey}
+                            {/block:AudioPlayer}
+                            {block:Caption}
+                                <div class="caption">{Caption}</div>
+                            {/block:Caption}
+                        </div>
+                        <div style="text-align:center;">
+                            <a onclick="$('.extra{PostID}').toggle(400)"><span class="glyphicon glyphicon-info-sign"></span></a>
+                        </div>
+                        <div class="extra{PostID}" style="display:none;">
+                            <strong>Audio</strong><br />
+                            {block:PlayCount}
+                                Play Count: {PlayCount}<br />
+                            {/block:PlayCount}
+                            {block:ExternalAudio}
+                                Link: <a href="{ExternalAudioURL}">{ExternalAudioURL}</a><br />
+                            {/block:ExternalAudio}
+                            {block:Artist}
+                                Artist: {Artist}<br />
+                            {/block:Artist}
+                            {block:Album}
+                                Album: {Album}<br />
+                            {/block:Album}
+                            {block:TrackName}
+                                Track Name: {TrackName}<br />
+                            {/block:TrackName}
+                            {block:AlbumArt}
+                                Album Art: <a href="{AlbumArtURL}">{AlbumArtURL}</a><br />
+                            {/block:AlbumArt}
+                            
+                            <strong>Metadata</strong><br />
+                            Post ID: {PostID}<br />
+                            Permalink: <a href="{Permalink}">{ShortURL}</a><br />
+                            <a onclick="$('.time-display').toggle()">Date/Time</a> <span class="time-display" style="display:none">[Machine] : {Timestamp}</span><span class="time-display" style="display:initial">[Human] : {Year}-{MonthNumberWithZero}-{DayOfMonthWithZero} {24HourWithZero}:{Minutes}:{Seconds}:{Beats}</span><br />
+                            {block:RebloggedFrom}
+                                Reblogged From: <a href="{ReblogParentURL}">{ReblogParentName}</a><br />
+                                Post Creator: <a href="{ReblogRootURL}">{ReblogRootName}</a><br />
+                            {/block:RebloggedFrom}
+                            {block:NotReblog}
+                                Original Content<br />
+                            {/block:NotReblog}
+                            {block:HasTags}
+                                Tags:<br />
+                                {block:Tags}
+                                    - <a href="{TagURL}">{Tag}</a><br />
+                                {/block:Tags}
+                            {/block:HasTags}
+                            {block:ContentSource}
+                                Source: <a href="{SourceURL}">{SourceTitle}</a><br />
+                            {/block:ContentSource}
+                            Notes: {NoteCount}
+                            {block:PostNotes}
+                                {PostNotes}
+                            {/block:PostNotes}
+                        </div>
+                    </div>
+                </div>
+                {/block:Audio}
+                {block:Answer}
+                <div class="container">
+                    <div class="jumbotron" style="margin-left:50px;margin-right:50px;">
+                        <div class="post answer">
+                            <p>{Asker} Query:</p>
+                            <blockquote><h4>{Question}</h4></blockquote>
+                            <p>{block:Answerer}{Answerer}{/block:Answerer} Response:</p>
+                            <blockquote>{Answer}</blockquote>
+                            {block:RebloggedFrom}
+                                <p>{Replies}</p>
+                            {/block:RebloggedFrom}
+                        </div>
+                        <div style="text-align:center;">
+                            <a onclick="$('.extra{PostID}').toggle(400)"><span class="glyphicon glyphicon-info-sign"></span></a>
+                        </div>
+                        <div class="extra{PostID}" style="display:none;">
+                            <strong>Metadata</strong><br />
+                            Post ID: {PostID}<br />
+                            Permalink: <a href="{Permalink}">{ShortURL}</a><br />
+                            <a onclick="$('.time-display').toggle()">Date/Time</a> <span class="time-display" style="display:none">[Machine] : {Timestamp}</span><span class="time-display" style="display:initial">[Human] : {Year}-{MonthNumberWithZero}-{DayOfMonthWithZero} {24HourWithZero}:{Minutes}:{Seconds}:{Beats}</span><br />
+                            {block:RebloggedFrom}
+                                Reblogged From: <a href="{ReblogParentURL}">{ReblogParentName}</a><br />
+                                Post Creator: <a href="{ReblogRootURL}">{ReblogRootName}</a><br />
+                            {/block:RebloggedFrom}
+                            {block:NotReblog}
+                                Original Content<br />
+                            {/block:NotReblog}
+                            {block:HasTags}
+                                Tags:<br />
+                                {block:Tags}
+                                    - <a href="{TagURL}">{Tag}</a><br />
+                                {/block:Tags}
+                            {/block:HasTags}
+                            {block:ContentSource}
+                                Source: <a href="{SourceURL}">{SourceTitle}</a><br />
+                            {/block:ContentSource}
+                            Notes: {NoteCount}
+                            {block:PostNotes}
+                                {PostNotes}
+                            {/block:PostNotes}
+                        </div>
+                    </div>
+                </div>
+                {/block:Answer}
+            {/block:Posts}
+        </div>
+       
+        <div id="footer">
+            <div class="well col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2" style="text-align:center">
+                {block:Pagination}
+                    {block:PreviousPage}
+                        <a href="{PreviousPage}">&#171; Previous</a>
+                    {/block:PreviousPage}
+                {/block:Pagination}
+                    <span class="glyphicon glyphicon-copyright-mark"></span> {CopyrightYears}
+                {/block:Pagination}
+                    {block:NextPage}
+                        <a href="{NextPage}">Next &#187;</a>
+                    {/block:NextPage}
+                {/block:Pagination}
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            $('[data-toggle="popover"]').popover({trigger: 'hover','placement': 'bottom'});
+        </script>
+    </body>
+</html>
