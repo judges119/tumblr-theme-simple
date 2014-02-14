@@ -49,12 +49,17 @@
                             {block:SubmissionsEnabled}
                                 <li><a href="/submit">{SubmitLabel}</a></li>
                             {/block:SubmissionsEnabled}
-                            {block:HasPages}
-                                {block:Pages}
-                                    <li><a href="{URL}">{Label}</a></li>
-                                {/block:Pages}
-                            {/block:HasPages}
                             <li><a href="/archive">Archive</a></li>
+                            {block:HasPages}
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contact <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        {block:Pages}
+                                            <li><a href="{URL}">{Label}</a></li>
+                                        {/block:Pages}
+                                    </ul>
+                                </li>
+                            {/block:HasPages}
                         </ul>
                         
                         <form class="navbar-form navbar-left" action="/search" method="get">
